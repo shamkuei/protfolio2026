@@ -1,0 +1,327 @@
+@import "tailwindcss";
+
+:root {
+  --carbon: #0a0a0f;
+  --carbon-light: #12121a;
+  --carbon-lighter: #1a1a26;
+  --carbon-border: #2a2a3a;
+  --neon-green: #00ff88;
+  --neon-cyan: #00e5ff;
+  --neon-green-dim: #00cc6a;
+  --neon-cyan-dim: #00b8cc;
+  --neon-green-glow: rgba(0, 255, 136, 0.15);
+  --neon-cyan-glow: rgba(0, 229, 255, 0.15);
+  --text-primary: #e0e0e8;
+  --text-secondary: #8888a0;
+  --text-muted: #55556a;
+  --background: var(--carbon);
+  --foreground: var(--text-primary);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-carbon: var(--carbon);
+  --color-carbon-light: var(--carbon-light);
+  --color-carbon-lighter: var(--carbon-lighter);
+  --color-carbon-border: var(--carbon-border);
+  --color-neon: var(--neon-green);
+  --color-neon-cyan: var(--neon-cyan);
+  --color-neon-dim: var(--neon-green-dim);
+  --color-neon-cyan-dim: var(--neon-cyan-dim);
+  --color-neon-glow: var(--neon-green-glow);
+  --color-neon-cyan-glow: var(--neon-cyan-glow);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-vazirmatn: var(--font-vazirmatn);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--carbon-border) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--carbon-border);
+  border-radius: 3px;
+}
+
+::selection {
+  background-color: var(--neon-green);
+  color: var(--carbon);
+}
+
+body {
+  background: var(--carbon);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Grid background pattern */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(42, 42, 58, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42, 42, 58, 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Scanline effect */
+.scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+/* Neon glow effects */
+.glow-green {
+  box-shadow: 0 0 20px var(--neon-green-glow), 0 0 40px var(--neon-green-glow);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px var(--neon-cyan-glow), 0 0 40px var(--neon-cyan-glow);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 10px var(--neon-green-glow), 0 0 20px var(--neon-green-glow);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 10px var(--neon-cyan-glow), 0 0 20px var(--neon-cyan-glow);
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: "█";
+  animation: blink 1s step-end infinite;
+  color: var(--neon-green);
+}
+
+/* Flicker animation for neon elements */
+@keyframes flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 1;
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.33;
+  }
+}
+
+.flicker {
+  animation: flicker 3s infinite;
+}
+
+/* Fade in up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* RTL support */
+[dir="rtl"] body {
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+}
+
+[dir="rtl"] .cursor-blink::after {
+  margin-left: 0;
+  margin-right: 2px;
+}
+
+[dir="rtl"] .bg-grid {
+  background-image:
+    linear-gradient(rgba(42, 42, 58, 0.3) 1px, transparent 1px),
+    linear-gradient(270deg, rgba(42, 42, 58, 0.3) 1px, transparent 1px);
+}
+
+/* Flip arrows in RTL */
+[dir="rtl"] .rtl-flip {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+/* Markdown prose — cyberpunk theme */
+.prose-custom {
+  --prose-spacing: 1.75em;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.prose-custom h1,
+.prose-custom h2,
+.prose-custom h3,
+.prose-custom h4 {
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+}
+
+.prose-custom h2 {
+  font-size: 1.5rem;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--carbon-border);
+}
+
+.prose-custom h3 {
+  font-size: 1.25rem;
+}
+
+.prose-custom p {
+  margin-bottom: var(--prose-spacing);
+}
+
+.prose-custom strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.prose-custom a {
+  color: var(--neon-green);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+
+.prose-custom a:hover {
+  color: var(--neon-cyan);
+}
+
+.prose-custom ul,
+.prose-custom ol {
+  margin-bottom: var(--prose-spacing);
+  padding-inline-start: 1.5em;
+}
+
+.prose-custom li {
+  margin-bottom: 0.5em;
+}
+
+.prose-custom li::marker {
+  color: var(--neon-green-dim);
+}
+
+.prose-custom blockquote {
+  border-inline-start: 3px solid var(--neon-green);
+  padding-inline-start: 1em;
+  margin: 1.5em 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.prose-custom hr {
+  border-color: var(--carbon-border);
+  margin: 2em 0;
+}
+
+.prose-custom code:not(pre code) {
+  background: var(--carbon-lighter);
+  border: 1px solid var(--carbon-border);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+  font-family: var(--font-geist-mono), monospace;
+  color: var(--neon-green);
+}
+
+.prose-custom pre {
+  background: var(--carbon-light) !important;
+  border: 1px solid var(--carbon-border);
+  border-radius: 8px;
+  padding: 1em 1.25em;
+  margin-bottom: var(--prose-spacing);
+  overflow-x: auto;
+}
+
+.prose-custom pre code {
+  background: none !important;
+  border: none !important;
+  padding: 0;
+  font-size: 0.875em;
+  color: var(--text-primary);
+}
+
+.prose-custom img {
+  border-radius: 8px;
+  border: 1px solid var(--carbon-border);
+  margin: 1.5em 0;
+}
+
+.prose-custom table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--prose-spacing);
+}
+
+.prose-custom th,
+.prose-custom td {
+  border: 1px solid var(--carbon-border);
+  padding: 0.5em 0.75em;
+  text-align: start;
+}
+
+.prose-custom th {
+  background: var(--carbon-lighter);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.prose-custom [data-rehype-pretty-code-title] {
+  background: var(--carbon-lighter);
+  border: 1px solid var(--carbon-border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 0.4em 1em;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.prose-custom [data-rehype-pretty-code-title] + pre {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-top: 0;
+}
+
+.prose-custom [data-highlighted-line] {
+  background: rgba(0, 255, 136, 0.08);
+  border-inline-start: 2px solid var(--neon-green);
+}
+
+.prose-custom [data-line-numbers] [data-line]::before {
+  color: var(--text-muted);
+  opacity: 0.5;
+}

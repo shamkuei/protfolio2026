@@ -1,0 +1,349 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ──────────────────────────────────────────────────────────────────
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+  FEATURED
+}
+
+enum TechCategory {
+  LANGUAGE
+  FRAMEWORK
+  DATABASE
+  DEVOPS
+  TOOL
+  DESIGN
+}
+
+enum ExperienceType {
+  WORK
+  EDUCATION
+  CERTIFICATION
+}
+
+// ─── Auth.js Required Models ────────────────────────────────────────────────
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  password      String?
+  role          String    @default("admin")
+
+  accounts         Account[]
+  sessions         Session[]
+  posts            Post[]
+  createdMedia     Media[]    @relation("MediaUploader")
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─── Blog: Categories ───────────────────────────────────────────────────────
+
+model Category {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  nameEn        String   @map("name_en")
+  nameFa        String   @map("name_fa")
+  descriptionEn String?  @map("description_en") @db.Text
+  descriptionFa String?  @map("description_fa") @db.Text
+  color         String?
+  order         Int      @default(0)
+
+  posts     PostCategory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("categories")
+}
+
+// ─── Blog: Posts ────────────────────────────────────────────────────────────
+
+model Post {
+  id            String     @id @default(cuid())
+  slugEn        String     @unique @map("slug_en")
+  slugFa        String     @unique @map("slug_fa")
+  titleEn       String     @map("title_en")
+  titleFa       String     @map("title_fa")
+  excerptEn     String?    @map("excerpt_en") @db.Text
+  excerptFa     String?    @map("excerpt_fa") @db.Text
+  contentEn     String?    @map("content_en") @db.Text
+  contentFa     String?    @map("content_fa") @db.Text
+  coverImage    String?    @map("cover_image")
+  status        PostStatus @default(DRAFT)
+  featured      Boolean    @default(false)
+  readingTimeEn Int?       @map("reading_time_en")
+  readingTimeFa Int?       @map("reading_time_fa")
+  viewCount     Int        @default(0) @map("view_count")
+  publishedAt   DateTime?  @map("published_at")
+
+  authorId   String         @map("author_id")
+  author     User           @relation(fields: [authorId], references: [id])
+  categories PostCategory[]
+  tags       PostTag[]
+
+  deletedAt DateTime?  @map("deleted_at")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt      @map("updated_at")
+
+  @@index([status, publishedAt])
+  @@index([slugEn])
+  @@index([slugFa])
+  @@index([deletedAt])
+  @@map("posts")
+}
+
+model PostCategory {
+  postId     String   @map("post_id")
+  categoryId String   @map("category_id")
+
+  post     Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([postId, categoryId])
+  @@map("post_categories")
+}
+
+model PostTag {
+  id     String @id @default(cuid())
+  postId String @map("post_id")
+  tag    String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, tag])
+  @@map("post_tags")
+}
+
+// ─── Portfolio: Projects ────────────────────────────────────────────────────
+
+model Project {
+  id                String        @id @default(cuid())
+  slug              String        @unique
+  titleEn           String        @map("title_en")
+  titleFa           String        @map("title_fa")
+  descriptionEn     String        @map("description_en") @db.Text
+  descriptionFa     String        @map("description_fa") @db.Text
+  longDescriptionEn String?       @map("long_description_en") @db.Text
+  longDescriptionFa String?       @map("long_description_fa") @db.Text
+  repoUrl           String?       @map("repo_url")
+  liveUrl           String?       @map("live_url")
+  thumbnailUrl      String?       @map("thumbnail_url")
+  status            ProjectStatus @default(ACTIVE)
+  featured          Boolean       @default(false)
+  order             Int           @default(0)
+  githubStars       Int?          @map("github_stars")
+  githubForks       Int?          @map("github_forks")
+  lastGithubSync    DateTime?     @map("last_github_sync")
+
+  techStack   ProjectTechStack[]
+  screenshots ProjectScreenshot[]
+  caseStudy   ProjectCaseStudy?
+
+  deletedAt DateTime?  @map("deleted_at")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt      @map("updated_at")
+
+  @@index([status, order])
+  @@index([deletedAt])
+  @@map("projects")
+}
+
+model ProjectScreenshot {
+  id        String @id @default(cuid())
+  projectId String @map("project_id")
+  url       String
+  altEn     String @map("alt_en")
+  altFa     String @map("alt_fa")
+  order     Int    @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, order])
+  @@map("project_screenshots")
+}
+
+model ProjectCaseStudy {
+  id          String  @id @default(cuid())
+  projectId   String  @unique @map("project_id")
+  contentEn   String  @map("content_en") @db.Text
+  contentFa   String  @map("content_fa") @db.Text
+  challengeEn String? @map("challenge_en") @db.Text
+  challengeFa String? @map("challenge_fa") @db.Text
+  solutionEn  String? @map("solution_en") @db.Text
+  solutionFa  String? @map("solution_fa") @db.Text
+  resultsEn   String? @map("results_en") @db.Text
+  resultsFa   String? @map("results_fa") @db.Text
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("project_case_studies")
+}
+
+model ProjectTechStack {
+  projectId   String    @map("project_id")
+  techStackId String    @map("tech_stack_id")
+
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  techStack TechStack @relation(fields: [techStackId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, techStackId])
+  @@map("project_tech_stack")
+}
+
+// ─── Skills / Tech Stack ────────────────────────────────────────────────────
+
+model TechStack {
+  id       String       @id @default(cuid())
+  name     String       @unique
+  icon     String?
+  color    String?
+  category TechCategory
+  order    Int          @default(0)
+
+  projects ProjectTechStack[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@index([category, order])
+  @@map("tech_stack")
+}
+
+// ─── Experience / Resume ────────────────────────────────────────────────────
+
+model Experience {
+  id            String         @id @default(cuid())
+  type          ExperienceType
+  titleEn       String         @map("title_en")
+  titleFa       String         @map("title_fa")
+  companyEn     String?        @map("company_en")
+  companyFa     String?        @map("company_fa")
+  locationEn    String?        @map("location_en")
+  locationFa    String?        @map("location_fa")
+  descriptionEn String?        @map("description_en") @db.Text
+  descriptionFa String?        @map("description_fa") @db.Text
+  startDate     DateTime       @map("start_date")
+  endDate       DateTime?      @map("end_date")
+  order         Int            @default(0)
+  url           String?
+
+  deletedAt DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt      @map("updated_at")
+
+  @@index([type, order])
+  @@map("experiences")
+}
+
+// ─── Social Links ───────────────────────────────────────────────────────────
+
+model SocialLink {
+  id       String  @id @default(cuid())
+  platform String  @unique
+  url      String
+  icon     String?
+  order    Int     @default(0)
+  visible  Boolean @default(true)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("social_links")
+}
+
+// ─── Site Configuration ─────────────────────────────────────────────────────
+
+model SiteConfig {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
+
+  @@map("site_configs")
+}
+
+// ─── Media / File Uploads ───────────────────────────────────────────────────
+
+model Media {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String   @map("original_name")
+  mimeType     String   @map("mime_type")
+  size         Int
+  path         String
+  url          String
+  altEn        String?  @map("alt_en")
+  altFa        String?  @map("alt_fa")
+  width        Int?
+  height       Int?
+
+  uploaderId String? @map("uploader_id")
+  uploader   User?   @relation("MediaUploader", fields: [uploaderId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@index([mimeType])
+  @@index([createdAt])
+  @@map("media")
+}

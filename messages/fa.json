@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "title": "پورتفولیو | توسعه‌دهنده فول‌استک و متخصص دواپس",
+    "description": "پورتفولیو توسعه‌دهنده فول‌استک جاوااسکریپت و متخصص دواپس"
+  },
+  "nav": {
+    "home": "خانه",
+    "about": "درباره من",
+    "blog": "بلاگ",
+    "projects": "پروژه‌ها",
+    "devops": "دواپس",
+    "admin": "داشبورد",
+    "switchLang": "English"
+  },
+  "hero": {
+    "greeting": "سلام، من هستم",
+    "role": "توسعه‌دهنده فول‌استک و متخصص دواپس",
+    "tagline": "ساخت برنامه‌های قدرتمند و زیرساخت مقیاس‌پذیر",
+    "terminal": {
+      "prompt": "~/portfolio",
+      "commands": [
+        "whoami → Full-Stack JavaScript Developer",
+        "cat skills.txt → React, Next.js, Node.js, Docker, K8s, AWS...",
+        "uptime → 5+ years of production experience",
+        "git log --oneline → 200+ projects delivered"
+      ]
+    },
+    "cta": {
+      "viewWork": "مشاهده کارها",
+      "getInTouch": "تماس با من"
+    }
+  },
+  "about": {
+    "title": "درباره من",
+    "bio": "یک توسعه‌دهنده فول‌استک جاوااسکریپت و متخصص دواپس پرشور که عاشق ساخت برنامه‌های مقیاس‌پذیر و خودکارسازی زیرساخت است. من تبدیل مشکلات پیچیده به راه‌حل‌های زیبا و قابل نگهداری را دوست دارم.",
+    "experience": "تجربیات",
+    "education": "تحصیلات",
+    "certifications": "گواهینامه‌ها",
+    "techStack": "تکنولوژی‌ها",
+    "frontend": "فرانت‌اند",
+    "backend": "بک‌اند",
+    "devops": "دواپس و زیرساخت",
+    "downloadResume": "دانلود رزومه"
+  },
+  "blog": {
+    "title": "بلاگ",
+    "readMore": "ادامه مطلب",
+    "categories": "دسته‌بندی‌ها",
+    "allPosts": "همه مقالات",
+    "searchPlaceholder": "جستجوی مقالات...",
+    "backToBlog": "→ بازگشت به بلاگ",
+    "publishedOn": "انتشار در",
+    "minRead": "{time} دقیقه مطالعه",
+    "viewAll": "→ مشاهده همه مقالات"
+  },
+  "projects": {
+    "title": "پروژه‌ها",
+    "viewProject": "مشاهده پروژه",
+    "viewCode": "کد منبع",
+    "caseStudy": "مطالعه موردی",
+    "stars": "ستاره",
+    "techStack": "تکنولوژی‌ها",
+    "screenshots": "اسکرین‌شات‌ها",
+    "backToProjects": "→ بازگشت به پروژه‌ها",
+    "viewAll": "→ مشاهده همه پروژه‌ها",
+    "viewDetails": "→ مشاهده جزئیات"
+  },
+  "devops": {
+    "title": "دواپس و زیرساخت",
+    "systemStatus": "وضعیت سیستم",
+    "uptime": "آپتایم",
+    "ping": "زمان پاسخ",
+    "deploy": "استقرار یک‌کلیکه",
+    "deployTo": "استقرار در {platform}"
+  },
+  "admin": {
+    "title": "داشبورد مدیریت",
+    "posts": "مقالات",
+    "projects": "پروژه‌ها",
+    "categories": "دسته‌بندی‌ها",
+    "settings": "تنظیمات",
+    "newPost": "مقاله جدید",
+    "editPost": "ویرایش مقاله",
+    "newProject": "پروژه جدید",
+    "editProject": "ویرایش پروژه",
+    "save": "ذخیره",
+    "delete": "حذف",
+    "cancel": "انصراف"
+  },
+  "footer": {
+    "copyright": "© {year} تمامی حقوق محفوظ است.",
+    "builtWith": "ساخته شده با Next.js و ❤️"
+  }
+}

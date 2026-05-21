@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "title": "Portfolio | Full-Stack Developer & DevOps Specialist",
+    "description": "Full-Stack JavaScript Developer and DevOps Specialist portfolio"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "projects": "Projects",
+    "devops": "DevOps",
+    "admin": "Dashboard",
+    "switchLang": "فارسی"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "role": "Full-Stack Developer & DevOps Specialist",
+    "tagline": "Building robust applications and scalable infrastructure",
+    "terminal": {
+      "prompt": "~/portfolio",
+      "commands": [
+        "whoami → Full-Stack JavaScript Developer",
+        "cat skills.txt → React, Next.js, Node.js, Docker, K8s, AWS...",
+        "uptime → 5+ years of production experience",
+        "git log --oneline → 200+ projects delivered"
+      ]
+    },
+    "cta": {
+      "viewWork": "View My Work",
+      "getInTouch": "Get In Touch"
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "bio": "A passionate Full-Stack JavaScript Developer and DevOps Specialist with a love for building scalable applications and automating infrastructure. I thrive on turning complex problems into elegant, maintainable solutions.",
+    "experience": "Experience",
+    "education": "Education",
+    "certifications": "Certifications",
+    "techStack": "Tech Stack",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "devops": "DevOps & Infrastructure",
+    "downloadResume": "Download Resume"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Read More",
+    "categories": "Categories",
+    "allPosts": "All Posts",
+    "searchPlaceholder": "Search articles...",
+    "backToBlog": "← Back to Blog",
+    "publishedOn": "Published on",
+    "minRead": "{time} min read",
+    "viewAll": "View All Posts →"
+  },
+  "projects": {
+    "title": "Projects",
+    "viewProject": "View Project",
+    "viewCode": "Source Code",
+    "caseStudy": "Case Study",
+    "stars": "stars",
+    "techStack": "Tech Stack",
+    "screenshots": "Screenshots",
+    "backToProjects": "← Back to Projects",
+    "viewAll": "View All Projects →",
+    "viewDetails": "view details →"
+  },
+  "devops": {
+    "title": "DevOps & Infrastructure",
+    "systemStatus": "System Status",
+    "uptime": "Uptime",
+    "ping": "Response Time",
+    "deploy": "One-Click Deploy",
+    "deployTo": "Deploy to {platform}"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "posts": "Posts",
+    "projects": "Projects",
+    "categories": "Categories",
+    "settings": "Settings",
+    "newPost": "New Post",
+    "editPost": "Edit Post",
+    "newProject": "New Project",
+    "editProject": "Edit Project",
+    "save": "Save",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "footer": {
+    "copyright": "© {year} All rights reserved.",
+    "builtWith": "Built with Next.js & ❤️"
+  }
+}
