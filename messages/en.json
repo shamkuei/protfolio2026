@@ -13,16 +13,16 @@
     "switchLang": "فارسی"
   },
   "hero": {
-    "greeting": "Hi, I'm",
+    "greeting": "Hi, I'm Alirza Shamkuei a",
     "role": "Full-Stack Developer & DevOps Specialist",
     "tagline": "Building robust applications and scalable infrastructure",
     "terminal": {
-      "prompt": "~/portfolio",
+      "prompt": "~/alireza",
       "commands": [
         "whoami → Full-Stack JavaScript Developer",
-        "cat skills.txt → React, Next.js, Node.js, Docker, K8s, AWS...",
-        "uptime → 5+ years of production experience",
-        "git log --oneline → 200+ projects delivered"
+        "cat skills.txt → React, Next.js, Node.js, Docker, K8s, Ansible...",
+        "uptime → 4+ years of production experience",
+        "git log --oneline → 100+ projects delivered"
       ]
     },
     "cta": {
@@ -89,6 +89,6 @@
   },
   "footer": {
     "copyright": "© {year} All rights reserved.",
-    "builtWith": "Built with Next.js & ❤️"
+    "builtWith": "Created by Alireza Shamkuie with ❤️"
   }
 }

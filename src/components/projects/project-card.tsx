@@ -30,7 +30,7 @@ export function ProjectCard({
     <div className="group relative rounded-lg border border-carbon-border bg-carbon-light p-6 transition-all hover:border-neon/30 hover:shadow-[0_0_30px_rgba(0,255,136,0.05)]">
       {/* Top links */}
       <div className="mb-4 flex items-center justify-between">
-        <span className="font-mono text-xs text-text-muted">
+        <span className="font-mono text-xs text-text-muted" dir="ltr">
           ~/projects/{slug}
         </span>
         <div className="flex gap-2">

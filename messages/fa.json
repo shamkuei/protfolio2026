@@ -13,16 +13,16 @@
     "switchLang": "English"
   },
   "hero": {
-    "greeting": "سلام، من هستم",
-    "role": "توسعه‌دهنده فول‌استک و متخصص دواپس",
+    "greeting": "سلام، من علیرضا شامکويی هستم",
+    "role": "توسعه‌دهنده فول‌استک & متخصص دواپس",
     "tagline": "ساخت برنامه‌های قدرتمند و زیرساخت مقیاس‌پذیر",
     "terminal": {
-      "prompt": "~/portfolio",
+      "prompt": "~/alireza",
       "commands": [
         "whoami → Full-Stack JavaScript Developer",
-        "cat skills.txt → React, Next.js, Node.js, Docker, K8s, AWS...",
-        "uptime → 5+ years of production experience",
-        "git log --oneline → 200+ projects delivered"
+        "cat skills.txt → React, Next.js, Node.js, Docker, K8s, Ansible...",
+        "uptime → 4+ years of production experience",
+        "git log --oneline → 100+ projects delivered"
       ]
     },
     "cta": {
@@ -88,7 +88,7 @@
     "cancel": "انصراف"
   },
   "footer": {
-    "copyright": "© {year} تمامی حقوق محفوظ است.",
-    "builtWith": "ساخته شده با Next.js و ❤️"
+    "copyright": "© {year} تمامی حقوق محفوظ است.", 
+    "builtWith": "ساخته شده توسط علیرضا شامکويي با ❤️"
   }
 }

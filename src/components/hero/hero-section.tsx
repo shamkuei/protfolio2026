@@ -1,11 +1,12 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/config/routing";
 import { TerminalAnimation } from "./terminal-animation";
 
 export function HeroSection() {
   const t = useTranslations("hero");
+  const locale = useLocale();
 
   return (
     <section className="relative min-h-[calc(100vh-4rem)] bg-grid px-4 py-20 sm:px-6 lg:px-8">
@@ -17,11 +18,11 @@ export function HeroSection() {
           </p>
           <h1 className="text-4xl font-bold tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
             <span className="text-glow-green text-neon">
-              {t("role").split("&")[0]}
+              {t("role").split("&")[0]}{locale === "fa" && <span style={{ color: "var(--neon-green)" }}> و</span>}
             </span>
             <br />
-            <span className="text-neon-cyan">
-              & {t("role").split("&")[1]?.trim()}
+            <span style={locale === "fa" ? { color: "var(--neon-cyan)" } : undefined} className={locale === "en" ? "text-neon-cyan" : ""}>
+              {locale === "en" && "& "}{t("role").split("&")[1]?.trim()}
             </span>
           </h1>
           <p className="max-w-lg text-lg text-text-secondary">

@@ -19,8 +19,8 @@ import {
   SiNginx,
   SiGithubactions,
   SiTerraform,
+  SiAnsible,
 } from "react-icons/si";
-import { FaAws } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 
 const techCategories = [
@@ -49,7 +49,7 @@ const techCategories = [
     items: [
       { name: "Docker", icon: SiDocker, color: "#2496ED" },
       { name: "Kubernetes", icon: SiKubernetes, color: "#326CE5" },
-      { name: "AWS", icon: FaAws, color: "#FF9900" },
+      { name: "Ansible", icon: SiAnsible, color: "#EE0000" },
       { name: "Nginx", icon: SiNginx, color: "#009639" },
       { name: "GitHub Actions", icon: SiGithubactions, color: "#ffffff" },
       { name: "Terraform", icon: SiTerraform, color: "#7B42BC" },

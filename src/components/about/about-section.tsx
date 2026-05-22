@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { TechStackCard } from "./tech-stack-card";
 import { Link } from "@/config/routing";
 import {
@@ -20,6 +20,7 @@ const socialLinks = [
 
 export function AboutSection() {
   const t = useTranslations("about");
+  const locale = useLocale();
 
   return (
     <section
@@ -34,7 +35,38 @@ export function AboutSection() {
           <div className="h-px flex-1 bg-carbon-border" />
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid gap-12 lg:grid-cols-[2fr_1fr]">
+          {/* Bio and content */}
+          <div className="space-y-8">
+            {/* Bio */}
+            <div className="rounded-lg border border-carbon-border bg-carbon-light p-6">
+              <div className="mb-3 flex items-center gap-2 border-b border-carbon-border pb-3" dir="ltr">
+                <span className="font-mono text-xs text-neon">
+                  ~/about
+                </span>
+                <span className="font-mono text-xs text-text-muted">—</span>
+                <span className="font-mono text-xs text-text-muted">
+                  bio.md
+                </span>
+              </div>
+              <p className="leading-relaxed text-text-secondary">
+                {t("bio")}
+              </p>
+            </div>
+
+            {/* Resume download */}
+            <a
+              href="#"
+              className="inline-flex items-center gap-2 rounded border border-carbon-border px-4 py-2 font-mono text-sm text-text-secondary transition-colors hover:border-neon-cyan hover:text-neon-cyan"
+            >
+              <HiOutlineDownload size={16} />
+              {t("downloadResume")}
+            </a>
+
+            {/* Tech Stack */}
+            <TechStackCard />
+          </div>
+
           {/* Avatar and social */}
           <div className="flex flex-col items-center gap-6">
             {/* Avatar placeholder */}
@@ -63,37 +95,6 @@ export function AboutSection() {
               <HiOutlineLocationMarker size={16} />
               <span>Remote / Worldwide</span>
             </div>
-          </div>
-
-          {/* Bio and content */}
-          <div className="space-y-8">
-            {/* Bio */}
-            <div className="rounded-lg border border-carbon-border bg-carbon-light p-6">
-              <div className="mb-3 flex items-center gap-2 border-b border-carbon-border pb-3">
-                <span className="font-mono text-xs text-neon">
-                  ~/about
-                </span>
-                <span className="font-mono text-xs text-text-muted">—</span>
-                <span className="font-mono text-xs text-text-muted">
-                  bio.md
-                </span>
-              </div>
-              <p className="leading-relaxed text-text-secondary">
-                {t("bio")}
-              </p>
-            </div>
-
-            {/* Resume download */}
-            <a
-              href="#"
-              className="inline-flex items-center gap-2 rounded border border-carbon-border px-4 py-2 font-mono text-sm text-text-secondary transition-colors hover:border-neon-cyan hover:text-neon-cyan"
-            >
-              <HiOutlineDownload size={16} />
-              {t("downloadResume")}
-            </a>
-
-            {/* Tech Stack */}
-            <TechStackCard />
           </div>
         </div>
       </div>
