@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HiOutlinePlus, HiOutlineTrash } from "react-icons/hi";
+import { slugify } from "@/lib/utils";
 
 interface ProjectEditorProps {
   project: {
@@ -36,6 +37,8 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
     techStack: [] as string[],
     newTech: "",
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -60,7 +63,34 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/admin/projects");
+    setSubmitting(true);
+    setError("");
+
+    const slug = form.slug || slugify(form.titleEn);
+    const { techStack: _ts, newTech: _nt, ...body } = form;
+    const payload = { ...body, slug };
+
+    try {
+      const res = await fetch(
+        isEditing ? `/api/projects/${project!.id}` : "/api/projects",
+        {
+          method: isEditing ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || t("saveError"));
+      }
+
+      router.push("/admin/projects");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("saveError"));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -79,14 +109,20 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
           </button>
           <button
             type="submit"
-            className="rounded border border-neon-cyan bg-neon-cyan/10 px-4 py-2 font-mono text-sm text-neon-cyan transition-colors hover:bg-neon-cyan hover:text-carbon"
+            disabled={submitting}
+            className="rounded border border-neon-cyan bg-neon-cyan/10 px-4 py-2 font-mono text-sm text-neon-cyan transition-colors hover:bg-neon-cyan hover:text-carbon disabled:opacity-50"
           >
-            {t("save")}
+            {submitting ? t("saving") : t("save")}
           </button>
         </div>
       </div>
 
-      {/* English */}
+      {error && (
+        <div className="rounded border border-red-500/30 bg-red-500/10 px-4 py-2 font-mono text-xs text-red-400">
+          {error}
+        </div>
+      )}
+
       <div className="rounded-lg border border-carbon-border bg-carbon-light p-6 space-y-4">
         <h3 className="font-mono text-sm text-neon">[English]</h3>
         <div className="grid gap-4 md:grid-cols-2">
@@ -105,6 +141,7 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
               type="text"
               value={form.slug}
               onChange={(e) => handleChange("slug", e.target.value)}
+              placeholder="auto-generated from title"
               className="w-full rounded border border-carbon-border bg-carbon px-3 py-2 font-mono text-sm text-text-primary focus:border-neon focus:outline-none"
             />
           </div>
@@ -120,7 +157,6 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
         </div>
       </div>
 
-      {/* Persian */}
       <div className="rounded-lg border border-carbon-border bg-carbon-light p-6 space-y-4" dir="rtl">
         <h3 className="font-mono text-sm text-neon-cyan">[فارسی]</h3>
         <div>
@@ -143,7 +179,6 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
         </div>
       </div>
 
-      {/* URLs & Status */}
       <div className="rounded-lg border border-carbon-border bg-carbon-light p-6 space-y-4">
         <h3 className="font-mono text-sm text-neon">[Links & Status]</h3>
         <div className="grid gap-4 md:grid-cols-2">
@@ -182,7 +217,6 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
         </div>
       </div>
 
-      {/* Tech Stack */}
       <div className="rounded-lg border border-carbon-border bg-carbon-light p-6 space-y-4">
         <h3 className="font-mono text-sm text-neon-cyan">[Tech Stack]</h3>
         <div className="flex flex-wrap gap-2">

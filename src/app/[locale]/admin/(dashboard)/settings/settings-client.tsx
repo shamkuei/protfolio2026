@@ -1,29 +1,85 @@
 "use client";
 
-import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
+
+const defaultSettings = {
+  siteNameEn: "",
+  siteNameFa: "",
+  siteDescriptionEn: "",
+  siteDescriptionFa: "",
+  githubUsername: "",
+  email: "",
+  linkedinUrl: "",
+  xUrl: "",
+};
 
 export function SettingsClient() {
-  const [settings, setSettings] = useState({
-    siteNameEn: "Portfolio",
-    siteNameFa: "پورتفولیو",
-    siteDescriptionEn: "Full-Stack Developer & DevOps Specialist",
-    siteDescriptionFa: "توسعه‌دهنده فول‌استک و متخصص دواپس",
-    githubUsername: "",
-    email: "",
-    linkedinUrl: "",
-    xUrl: "",
-  });
+  const t = useTranslations("admin");
+  const [settings, setSettings] = useState(defaultSettings);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((r) => r.json())
+      .then((data) => setSettings({ ...defaultSettings, ...data }))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleChange = (field: string, value: string) => {
     setSettings((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch("/api/admin/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings),
+      });
+
+      if (!res.ok) throw new Error();
+      setMessage({ type: "success", text: t("saved") });
+    } catch {
+      setMessage({ type: "error", text: t("saveError") });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="h-8 w-32 animate-pulse rounded bg-carbon-lighter" />
+        <div className="h-64 animate-pulse rounded-lg border border-carbon-border bg-carbon-light" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-text-primary">Settings</h1>
+      <h1 className="text-2xl font-bold text-text-primary">{t("settings")}</h1>
 
-      <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-        {/* Site Identity */}
+      {message && (
+        <div
+          className={`rounded px-4 py-2 font-mono text-xs ${
+            message.type === "success"
+              ? "border border-neon/30 bg-neon/10 text-neon"
+              : "border border-red-500/30 bg-red-500/10 text-red-400"
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
+
+      <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="rounded-lg border border-carbon-border bg-carbon-light p-6 space-y-4">
           <h3 className="font-mono text-sm text-neon">[Site Identity]</h3>
           <div className="grid gap-4 md:grid-cols-2">
@@ -70,7 +126,6 @@ export function SettingsClient() {
           </div>
         </div>
 
-        {/* Social Links */}
         <div className="rounded-lg border border-carbon-border bg-carbon-light p-6 space-y-4">
           <h3 className="font-mono text-sm text-neon-cyan">[Social Links]</h3>
           <div className="space-y-3">
@@ -117,9 +172,10 @@ export function SettingsClient() {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="rounded border border-neon bg-neon/10 px-6 py-2 font-mono text-sm text-neon transition-colors hover:bg-neon hover:text-carbon"
+            disabled={saving}
+            className="rounded border border-neon bg-neon/10 px-6 py-2 font-mono text-sm text-neon transition-colors hover:bg-neon hover:text-carbon disabled:opacity-50"
           >
-            Save Settings
+            {saving ? t("saving") : t("saveSettings")}
           </button>
         </div>
       </form>

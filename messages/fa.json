@@ -13,7 +13,8 @@
     "switchLang": "English"
   },
   "hero": {
-    "greeting": "سلام، من علیرضا شامکويی هستم",
+    "greeting": "سلام، من",
+    "greetingName": "علیرضا شامکوئی",
     "role": "توسعه‌دهنده فول‌استک & متخصص دواپس",
     "tagline": "ساخت برنامه‌های قدرتمند و زیرساخت مقیاس‌پذیر",
     "terminal": {
@@ -85,7 +86,24 @@
     "editProject": "ویرایش پروژه",
     "save": "ذخیره",
     "delete": "حذف",
-    "cancel": "انصراف"
+    "cancel": "انصراف",
+    "login": "ورود",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "loginError": "ایمیل یا رمز عبور اشتباه است",
+    "loggingIn": "در حال ورود...",
+    "loading": "در حال بارگذاری...",
+    "saving": "در حال ذخیره...",
+    "saved": "با موفقیت ذخیره شد",
+    "saveError": "ذخیره نشد",
+    "deleteConfirm": "آیا از حذف این مورد مطمئن هستید؟",
+    "deleted": "با موفقیت حذف شد",
+    "deleteError": "حذف نشد",
+    "noItems": "موردی یافت نشد",
+    "views": "بازدیدها",
+    "quickActions": "دسترسی سریع",
+    "saveSettings": "ذخیره تنظیمات",
+    "logout": "خروج"
   },
   "footer": {
     "copyright": "© {year} تمامی حقوق محفوظ است.", 

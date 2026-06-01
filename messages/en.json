@@ -13,7 +13,8 @@
     "switchLang": "فارسی"
   },
   "hero": {
-    "greeting": "Hi, I'm Alirza Shamkuei a",
+    "greeting": "Hi, I'm",
+    "greetingName": "Alireza Shamkuie",
     "role": "Full-Stack Developer & DevOps Specialist",
     "tagline": "Building robust applications and scalable infrastructure",
     "terminal": {
@@ -85,7 +86,24 @@
     "editProject": "Edit Project",
     "save": "Save",
     "delete": "Delete",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "loginError": "Invalid email or password",
+    "loggingIn": "Signing in...",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "saved": "Saved successfully",
+    "saveError": "Failed to save",
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "deleted": "Deleted successfully",
+    "deleteError": "Failed to delete",
+    "noItems": "No items found",
+    "views": "Views",
+    "quickActions": "Quick Actions",
+    "saveSettings": "Save Settings",
+    "logout": "Logout"
   },
   "footer": {
     "copyright": "© {year} All rights reserved.",

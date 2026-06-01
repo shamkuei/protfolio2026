@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { slugify } from "@/lib/utils";
 
 interface PostEditorProps {
   post: {
@@ -33,6 +34,8 @@ export function PostEditorClient({ post }: PostEditorProps) {
     contentFa: post?.contentFa || "",
     status: post?.status || "DRAFT",
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -40,8 +43,33 @@ export function PostEditorClient({ post }: PostEditorProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, POST/PUT to /api/posts
-    router.push("/admin/posts");
+    setSubmitting(true);
+    setError("");
+
+    const slug = form.slug || slugify(form.titleEn);
+    const body = { ...form, slug };
+
+    try {
+      const res = await fetch(
+        isEditing ? `/api/posts/${post!.id}` : "/api/posts",
+        {
+          method: isEditing ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || t("saveError"));
+      }
+
+      router.push("/admin/posts");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("saveError"));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -60,14 +88,20 @@ export function PostEditorClient({ post }: PostEditorProps) {
           </button>
           <button
             type="submit"
-            className="rounded border border-neon bg-neon/10 px-4 py-2 font-mono text-sm text-neon transition-colors hover:bg-neon hover:text-carbon"
+            disabled={submitting}
+            className="rounded border border-neon bg-neon/10 px-4 py-2 font-mono text-sm text-neon transition-colors hover:bg-neon hover:text-carbon disabled:opacity-50"
           >
-            {t("save")}
+            {submitting ? t("saving") : t("save")}
           </button>
         </div>
       </div>
 
-      {/* English fields */}
+      {error && (
+        <div className="rounded border border-red-500/30 bg-red-500/10 px-4 py-2 font-mono text-xs text-red-400">
+          {error}
+        </div>
+      )}
+
       <div className="rounded-lg border border-carbon-border bg-carbon-light p-6 space-y-4">
         <h3 className="font-mono text-sm text-neon">[English]</h3>
         <div className="grid gap-4 md:grid-cols-2">
@@ -86,6 +120,7 @@ export function PostEditorClient({ post }: PostEditorProps) {
               type="text"
               value={form.slug}
               onChange={(e) => handleChange("slug", e.target.value)}
+              placeholder="auto-generated from title"
               className="w-full rounded border border-carbon-border bg-carbon px-3 py-2 font-mono text-sm text-text-primary focus:border-neon focus:outline-none"
             />
           </div>
@@ -110,7 +145,6 @@ export function PostEditorClient({ post }: PostEditorProps) {
         </div>
       </div>
 
-      {/* Persian fields */}
       <div className="rounded-lg border border-carbon-border bg-carbon-light p-6 space-y-4" dir="rtl">
         <h3 className="font-mono text-sm text-neon-cyan">[فارسی]</h3>
         <div>
@@ -142,7 +176,6 @@ export function PostEditorClient({ post }: PostEditorProps) {
         </div>
       </div>
 
-      {/* Status */}
       <div className="rounded-lg border border-carbon-border bg-carbon-light p-4">
         <label className="mb-2 block font-mono text-xs text-text-muted">Status</label>
         <select
