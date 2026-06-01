@@ -58,9 +58,31 @@ redis_data/
 # Uploads (managed by Docker volumes in production)
 public/uploads/
 
-# SSL certificates
+# SSL certificates & keys
 nginx/certbot-webroot/
+*.pem
+*.key
+*.crt
+*.p12
+
+# Secrets & credentials
+credentials.json
+service-account*.json
+*.kubeconfig
+
+# Logs
+logs/
+*.log
+
+# Cache
+.cache/
+.tsbuildinfo
+.turbo/
+.eslintcache
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
 
 # Misc
-*.pem
 next-env.d.ts

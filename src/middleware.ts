@@ -1,9 +1,11 @@
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./config/routing";
-import { auth } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 import { NextResponse } from "next/server";
 
 const intlMiddleware = createMiddleware(routing);
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
