@@ -34,6 +34,7 @@ export default async function EditProjectPage({
         repoUrl: project.repoUrl || "",
         liveUrl: project.liveUrl || "",
         status: project.status,
+        techStack: project.techStack.map((ts) => ts.techStack.name),
       }}
     />
   );

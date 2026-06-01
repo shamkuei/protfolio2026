@@ -17,6 +17,7 @@ interface ProjectEditorProps {
     repoUrl: string;
     liveUrl: string;
     status: string;
+    techStack: string[];
   } | null;
 }
 
@@ -34,7 +35,7 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
     repoUrl: project?.repoUrl || "",
     liveUrl: project?.liveUrl || "",
     status: project?.status || "ACTIVE",
-    techStack: [] as string[],
+    techStack: project?.techStack || [],
     newTech: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -67,7 +68,7 @@ export function ProjectEditorClient({ project }: ProjectEditorProps) {
     setError("");
 
     const slug = form.slug || slugify(form.titleEn);
-    const { techStack: _ts, newTech: _nt, ...body } = form;
+    const { newTech: _nt, ...body } = form;
     const payload = { ...body, slug };
 
     try {

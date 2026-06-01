@@ -7,18 +7,13 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const project = await prisma.project.findUnique({
-    where: { id },
-    include: {
-      techStack: { include: { techStack: true } },
-    },
-  });
+  const experience = await prisma.experience.findUnique({ where: { id } });
 
-  if (!project || project.deletedAt) {
+  if (!experience || experience.deletedAt) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  return NextResponse.json(project);
+  return NextResponse.json(experience);
 }
 
 export async function PUT(
@@ -33,41 +28,31 @@ export async function PUT(
   const { id } = await params;
   const body = await req.json();
 
-  const existing = await prisma.project.findUnique({ where: { id } });
+  const existing = await prisma.experience.findUnique({ where: { id } });
   if (!existing || existing.deletedAt) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const project = await prisma.project.update({
+  const experience = await prisma.experience.update({
     where: { id },
     data: {
+      type: body.type,
       titleEn: body.titleEn,
       titleFa: body.titleFa,
-      slug: body.slug,
-      descriptionEn: body.descriptionEn,
-      descriptionFa: body.descriptionFa,
-      repoUrl: body.repoUrl,
-      liveUrl: body.liveUrl,
-      status: body.status,
+      companyEn: body.companyEn || null,
+      companyFa: body.companyFa || null,
+      locationEn: body.locationEn || null,
+      locationFa: body.locationFa || null,
+      descriptionEn: body.descriptionEn || null,
+      descriptionFa: body.descriptionFa || null,
+      startDate: new Date(body.startDate),
+      endDate: body.endDate ? new Date(body.endDate) : null,
+      order: body.order ?? 0,
+      url: body.url || null,
     },
   });
 
-  if (Array.isArray(body.techStack)) {
-    await prisma.projectTechStack.deleteMany({ where: { projectId: id } });
-
-    for (const name of body.techStack) {
-      const tech = await prisma.techStack.upsert({
-        where: { name },
-        update: {},
-        create: { name, category: "TOOL" },
-      });
-      await prisma.projectTechStack.create({
-        data: { projectId: id, techStackId: tech.id },
-      });
-    }
-  }
-
-  return NextResponse.json(project);
+  return NextResponse.json(experience);
 }
 
 export async function DELETE(
@@ -80,10 +65,10 @@ export async function DELETE(
   }
 
   const { id } = await params;
-  const project = await prisma.project.update({
+  await prisma.experience.update({
     where: { id },
     data: { deletedAt: new Date() },
   });
 
-  return NextResponse.json(project);
+  return NextResponse.json({ success: true });
 }

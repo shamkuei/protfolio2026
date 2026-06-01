@@ -8,7 +8,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [posts, projects, categories, viewsResult] = await Promise.all([
+  const [posts, projects, categories, viewsResult, experiences, media] = await Promise.all([
     prisma.post.count({ where: { deletedAt: null } }),
     prisma.project.count({ where: { deletedAt: null } }),
     prisma.category.count(),
@@ -16,6 +16,8 @@ export async function GET() {
       _sum: { viewCount: true },
       where: { deletedAt: null },
     }),
+    prisma.experience.count({ where: { deletedAt: null } }),
+    prisma.media.count(),
   ]);
 
   return NextResponse.json({
@@ -23,5 +25,7 @@ export async function GET() {
     projects,
     categories,
     views: viewsResult._sum.viewCount || 0,
+    experiences,
+    media,
   });
 }

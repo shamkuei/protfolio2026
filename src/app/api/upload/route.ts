@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 
@@ -27,5 +28,19 @@ export async function POST(req: Request) {
 
   await writeFile(filePath, buffer);
 
-  return NextResponse.json({ url: `/uploads/${fileName}` }, { status: 201 });
+  const url = `/uploads/${fileName}`;
+
+  const media = await prisma.media.create({
+    data: {
+      filename: fileName,
+      originalName: file.name,
+      mimeType: file.type,
+      size: file.size,
+      path: url,
+      url,
+      uploaderId: session.user.id!,
+    },
+  });
+
+  return NextResponse.json({ ...media }, { status: 201 });
 }

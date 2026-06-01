@@ -9,6 +9,9 @@ import {
   HiOutlineCollection,
   HiOutlineCog,
   HiOutlineLogout,
+  HiOutlineCode,
+  HiOutlineBriefcase,
+  HiOutlinePhotograph,
 } from "react-icons/hi";
 import { signOut } from "next-auth/react";
 
@@ -16,7 +19,10 @@ const sidebarLinks = [
   { href: "/admin", key: "dashboard", icon: HiOutlineHome },
   { href: "/admin/posts", key: "posts", icon: HiOutlineDocumentText },
   { href: "/admin/projects", key: "projects", icon: HiOutlineCollection },
+  { href: "/admin/experiences", key: "experiences", icon: HiOutlineBriefcase },
+  { href: "/admin/tech-stack", key: "techStack", icon: HiOutlineCode },
   { href: "/admin/categories", key: "categories", icon: HiOutlineCollection },
+  { href: "/admin/media", key: "media", icon: HiOutlinePhotograph },
   { href: "/admin/settings", key: "settings", icon: HiOutlineCog },
 ];
 

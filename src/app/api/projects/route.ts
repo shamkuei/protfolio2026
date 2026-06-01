@@ -4,9 +4,8 @@ import { auth } from "@/lib/auth";
 
 export async function GET() {
   const projects = await prisma.project.findMany({
+    where: { deletedAt: null },
     include: {
-      screenshots: true,
-      caseStudies: true,
       techStack: { include: { techStack: true } },
     },
     orderBy: { createdAt: "desc" },
@@ -34,6 +33,19 @@ export async function POST(req: Request) {
       status: body.status || "ACTIVE",
     },
   });
+
+  if (Array.isArray(body.techStack) && body.techStack.length > 0) {
+    for (const name of body.techStack) {
+      const tech = await prisma.techStack.upsert({
+        where: { name },
+        update: {},
+        create: { name, category: "TOOL" },
+      });
+      await prisma.projectTechStack.create({
+        data: { projectId: project.id, techStackId: tech.id },
+      });
+    }
+  }
 
   return NextResponse.json(project, { status: 201 });
 }

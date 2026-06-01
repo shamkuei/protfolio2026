@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { HiOutlineDocumentText, HiOutlineCollection, HiOutlineTag, HiOutlineEye } from "react-icons/hi";
+import { HiOutlineDocumentText, HiOutlineCollection, HiOutlineTag, HiOutlineEye, HiOutlineBriefcase, HiOutlinePhotograph } from "react-icons/hi";
 import { useEffect, useState } from "react";
 
 interface Stats {
@@ -9,6 +9,8 @@ interface Stats {
   projects: number;
   categories: number;
   views: number;
+  experiences: number;
+  media: number;
 }
 
 export function DashboardClient() {
@@ -20,13 +22,15 @@ export function DashboardClient() {
     fetch("/api/admin/stats")
       .then((r) => r.json())
       .then((data) => setStats(data))
-      .catch(() => setStats({ posts: 0, projects: 0, categories: 0, views: 0 }))
+      .catch(() => setStats({ posts: 0, projects: 0, categories: 0, views: 0, experiences: 0, media: 0 }))
       .finally(() => setLoading(false));
   }, []);
 
   const cards = [
     { label: t("posts"), value: stats?.posts ?? 0, icon: HiOutlineDocumentText, color: "text-neon" },
     { label: t("projects"), value: stats?.projects ?? 0, icon: HiOutlineCollection, color: "text-neon-cyan" },
+    { label: t("experiences"), value: stats?.experiences ?? 0, icon: HiOutlineBriefcase, color: "text-green-400" },
+    { label: t("media"), value: stats?.media ?? 0, icon: HiOutlinePhotograph, color: "text-orange-400" },
     { label: t("categories"), value: stats?.categories ?? 0, icon: HiOutlineTag, color: "text-yellow-400" },
     { label: t("views"), value: stats?.views ?? 0, icon: HiOutlineEye, color: "text-purple-400" },
   ];
@@ -35,9 +39,9 @@ export function DashboardClient() {
     <div className="space-y-8">
       <h1 className="text-2xl font-bold text-text-primary">{t("title")}</h1>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {loading
-          ? Array.from({ length: 4 }).map((_, i) => (
+          ? Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="animate-pulse rounded-lg border border-carbon-border bg-carbon-light p-4">
                 <div className="h-3 w-1/3 rounded bg-carbon-lighter" />
                 <div className="mt-3 h-7 w-1/2 rounded bg-carbon-lighter" />
